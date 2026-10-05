@@ -10,13 +10,17 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Setup Gradle 8.5
+      - name: Reparar wrapper jar ANTES
+        run: |
+          rm -f gradle/wrapper/gradle-wrapper.jar
+          echo "Jar corrupto borrado"
+      - name: Setup Gradle 8.5 sin validar
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.5
-      - name: Reparar wrapper y Compilar
+          validate-wrappers: false
+      - name: Regenerar wrapper bueno y Compilar
         run: |
-          rm -f gradle/wrapper/gradle-wrapper.jar
           gradle wrapper --gradle-version 8.5
           chmod +x gradlew
           ./gradlew assembleDebug
